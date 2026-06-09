@@ -2,6 +2,23 @@ import streamlit as st
 import pandas as pd
 import pickle
 import numpy as np
+import os
+import sys
+import streamlit.web.cli as stcli
+
+def handler(request):
+    """
+    Yeh function Vercel ko 'handler' provide karega jo error ko solve karega,
+    aur background mein Streamlit bootstrap process ko load karega.
+    """
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, 'index.py')
+    
+    sys.argv = ["streamlit", "run", filename, "--server.port=8080", "--server.address=0.0.0.0"]
+    sys.exit(stcli.main())
+
+# Vercel ko top-level application object dene ke liye
+app = handler
 
 # Application Configuration and Layout Setup
 st.set_page_config(page_title="Student Performance Analysis", page_icon="🎓", layout="wide")
